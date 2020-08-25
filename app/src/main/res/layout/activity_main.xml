@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:padding="8dp"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/btn_Call_Log"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Call Log"
+        android:background="@color/btn_background"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Brower"
+        app:layout_constraintStart_toStartOf="@+id/btn_Brower"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Brower" />
+
+    <Button
+        android:id="@+id/btn_Brower"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Browser"
+        android:background="@color/btn_background"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Contact"
+        app:layout_constraintStart_toStartOf="@+id/btn_Contact"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Contact" />
+
+    <Button
+        android:id="@+id/btn_Camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Camera"
+        android:background="@color/btn_background"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Call"
+        app:layout_constraintStart_toStartOf="@+id/btn_Call"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Call" />
+
+    <EditText
+        android:id="@+id/edt_Phone_Number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="Enter phone number.."
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_Call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Call"
+        android:background="@color/btn_background"
+        app:layout_constraintEnd_toEndOf="@+id/edt_Phone_Number"
+        app:layout_constraintStart_toStartOf="@+id/edt_Phone_Number"
+        app:layout_constraintTop_toBottomOf="@+id/edt_Phone_Number" />
+
+    <Button
+        android:id="@+id/btn_Contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Contact"
+        android:background="@color/btn_background"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Camera"
+        app:layout_constraintStart_toStartOf="@+id/btn_Camera"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Camera" />
+
+    <Button
+        android:id="@+id/btn_Gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Gallery"
+        android:background="@color/btn_background"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Call_Log"
+        app:layout_constraintStart_toStartOf="@+id/btn_Call_Log"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Call_Log" />
+
+    <Button
+        android:id="@+id/btn_Dialpad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="DialPad"
+        android:background="@color/btn_background"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Gallery"
+        app:layout_constraintStart_toStartOf="@+id/btn_Gallery"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Gallery" />
+
+    <ImageView
+        android:id="@+id/imv_Show_Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Dialpad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Dialpad"
+        tools:srcCompat="@tools:sample/avatars" />
+</androidx.constraintlayout.widget.ConstraintLayout>
