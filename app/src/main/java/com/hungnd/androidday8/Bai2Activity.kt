@@ -2,17 +2,23 @@ package com.hungnd.androidday8
 
 import android.Manifest
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.app.Activity
+import android.R.attr
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_bai2.*
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.InputStream
 
 
 class Bai2Activity : AppCompatActivity() {
@@ -23,7 +29,7 @@ class Bai2Activity : AppCompatActivity() {
             pickImage()
         }
         btn_Share.setOnClickListener {
-            val sharingIntent = Intent(Intent.ACTION_SENDTO)
+            val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.setType("image/jpeg");
             sharingIntent.putExtra(Intent.EXTRA_STREAM, PICK_IMAGE_REQUEST_CODE);
             startActivity(Intent.createChooser(sharingIntent, "Share image using"));
@@ -36,20 +42,13 @@ class Bai2Activity : AppCompatActivity() {
                 READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            val intent = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.INTERNAL_CONTENT_URI
-            )
-            intent.type = "image/*"
-            intent.putExtra("crop", "true")
-            intent.putExtra("scale", true)
-            intent.putExtra("aspectX", 16)
-            intent.putExtra("aspectY", 9)
-            startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE)
+            val photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.type = "image/*"
+            startActivityForResult(photoPickerIntent, PICK_IMAGE_REQUEST_CODE)
         } else {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                arrayOf(READ_EXTERNAL_STORAGE),
                 READ_EXTERNAL_STORAGE_REQUEST_CODE
             )
         }
@@ -58,54 +57,20 @@ class Bai2Activity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST_CODE) {
-            if (resultCode != Activity.RESULT_OK) {
-                return
-            }
-            val uri = data?.data
-            if (uri != null) {
-                val imageFile = uriToImageFile(uri)
-                // todo do something with file
-            }
-            if (uri != null) {
-                val imageBitmap = uriToBitmap(uri)
-                // todo do something with bitmap
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // pick image after request permission success
-                    pickImage()
+            if (resultCode === RESULT_OK) {
+                try {
+                    val imageUri: Uri = data?.data!!
+                    val imageStream: InputStream? = contentResolver.openInputStream(imageUri)
+                    val selectedImage = BitmapFactory.decodeStream(imageStream)
+                    imv_Get_To_Show.setImageBitmap(selectedImage)
+                } catch (e: FileNotFoundException) {
+                    e.printStackTrace()
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
                 }
+            } else {
+                Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show()
             }
         }
-    }
-
-    private fun uriToImageFile(uri: Uri): File? {
-        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = contentResolver.query(uri, filePathColumn, null, null, null)
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-                val filePath = cursor.getString(columnIndex)
-                cursor.close()
-                return File(filePath)
-            }
-            cursor.close()
-        }
-        return null
-    }
-
-    private fun uriToBitmap(uri: Uri): Bitmap {
-        return MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
     }
 
     companion object {
